@@ -125,6 +125,28 @@ so for the following reasons:
   :group 'coq)
 
 
+(defcustom coq-user-proofmode-tactics-db nil
+  "User defined custom proofmode tactics.
+See `coq-syntax-db' for syntax.  It is not necessary to add your
+own commands here (it is not needed by the
+synchronizing/backtracking system).  You may however do so for
+the following reasons:
+
+   1 your commands will be colorized by font-lock
+
+   2 your commands will be added to the menu and to completion when
+   calling \\[coq-insert-command]
+
+   3 you may define an abbreviation for your command."
+
+  :type '(repeat sexp)
+  :group 'coq)
+
+(defvar coq-proofmode-tactics-db
+  coq-user-proofmode-tactics-db
+  "User defined custom proofmode tactic(al)s."
+  )
+
 ;; user shortcuts are prioritized by being put at the end
 (defvar coq-tactics-db
   (append
@@ -1200,6 +1222,14 @@ Very similar to `coq-omit-proof-admit-command', but without the dot."
   (coq-build-regexp-list-from-db coq-tacticals-db)
   "Keywords for tacticals in a Coq script.")
 
+(defvar coq-proofmode-tactics
+  (coq-build-regexp-list-from-db coq-proofmode-tactics-db)
+  "Keywords for user-defined proofmode tactic(al)s.")
+
+(defvar coq-proofmode-tactics-regexp
+  (coq-build-opt-regexp-from-db coq-proofmode-tactics-db)
+  "Keywords regexp for user-defined proofmode tactic(al)s.")
+
 (defvar coq-symbol-binders "∀\\|∃\\|λ")
 
 
@@ -1467,6 +1497,7 @@ proofs for a Let declaration should not be omitted."
    coq-font-lock-terms
    `((,coq-solve-tactics-regexp . 'coq-solve-tactics-face)
      (,coq-solve-cheat-tactics-regexp . 'coq-cheat-face)
+     (,coq-proofmode-tactics-regexp . 'coq-proofmode-tactics-face)
      (,coq-keywords-regexp . 'font-lock-keyword-face)
      (,coq-reserved-regexp . 'font-lock-type-face)
      (,coq-tactics-regexp . 'proof-tactics-name-face)

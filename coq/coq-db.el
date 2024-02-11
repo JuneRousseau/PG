@@ -284,6 +284,13 @@ See `coq-syntax-db' for DB structure."
   "Not documented."
   (nth 3 l)) ; fourth argument is nil --> state preserving command
 
+;;A new face for user-defined proofmode
+(defface coq-proofmode-tactics-face
+  `((((background light)) :foreground "deep pink")
+    (((background dark)) :foreground "pink")
+    ()) ; monocolor or greyscale: no highlight
+  "Face for names of user-defined proofmode tactics in proof scripts."
+  :group 'proof-faces)
 
 ;;A new face for tactics which fail when they don't kill the current goal
 (defface coq-solve-tactics-face
