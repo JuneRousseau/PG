@@ -64,6 +64,22 @@ On Windows you might need something like:
          (with-output-to-string (process-file coq-command nil standard-output)))
       (error nil))))
 
+;; (defun coq-detect-rocq-cli ()
+;;   "return non nil if the detected coq/rocq executable obeys the rocq CLI."
+;;   (let* ((coq-command (or proof-prog-name
+;;                           (coq-autodetect-progname))))
+;;     (if (string= coq-command "rocq")
+;;         ;; Shortcut case – we know “rocq” implements the RoCQ CLI.
+;;         t
+;;       ;; Normal detection path.
+;;       (let ((output
+;;              (condition-case nil
+;;                  (with-temp-buffer
+;;                    (apply 'process-file (list coq-command nil t))
+;;                    (buffer-string))
+;;                (error ""))))          ; treat failures as empty output
+;;         (string-match "Supported subcommands:" output)))))
+
 (defun coq-detect-coqdep ()
   (if (coq-detect-rocq-cli) (coq-detect-prog-gen "rocq")
     (coq-detect-prog-gen "coqdep")))
